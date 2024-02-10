@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+
+# Backend section
+  php:
+    build: ${BUILD_PHP_PATH}
+    volumes:
+      - ${HOST_APP_BACKEND_PATH}:${CONTAINER_APP_BACKEND_PATH}
+      - ${HOST_APACHE_PATH}:${CONTAINER_APACHE_PATH}
+    ports:
+      - 80:80
+
+# DB services
+
+  postgre:
+    build: ${BUILD_POSTGRE_PATH}
+    volumes:
+      - ${POSTGRE_HOST_PATH}:${POSTGRE_CONTAINER_PATH}
+    ports:
+      - 5432:5432
+
+  # mysql:
+  #   build: ${BUILD_MYSQL_PATH}
+  #   volumes:
+  #     - ${MYSQL_HOST_PATH}:${MYSQL_CONTAINER_PATH}
+  #   ports:
+  #     - 3306:3306
+
+# Admin pannel section
+
+  pgAdmin:
+    image: elestio/pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.ru
+      - PGADMIN_DEFAULT_PASSWORD=12345678
+      - PGADMIN_LISTEN_PORT=8080
+    ports:
+      - 1001:8080
